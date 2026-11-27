@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comunidades | UNYA</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+.container { max-width:1000px; margin:auto; padding:20px; }
+.topo { display:flex; justify-content:space-between; align-items:center; }
+.criacao { background:#15131e; padding:20px; border:1px solid #302640; border-radius:15px; margin:25px 0; }
+input, textarea, select {
+  width:100%; padding:13px; margin:8px 0;
+  background:#09090f; color:white;
+  border:1px solid #40334f; border-radius:9px;
+}
+textarea { min-height:75px; }
+.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:15px; }
+.grupo { background:#15131e; border:1px solid #302640; border-radius:15px; padding:20px; }
+.grupo h3 { color:#c19cff; }
+.muted { color:#aaa5b5; }
+</style>
+</head>
+<body>
+
+<main class="container">
+  <header class="topo">
+    <h2 style="color:#b58aff;letter-spacing:3px">UNYA</h2>
+    <a href="index.html">Início</a>
+  </header>
+
+  <h1>Comunidades 💜</h1>
+  <p class="muted">Encontre pessoas que compartilham seus interesses.</p>
+
+  <section class="criacao">
+    <h2>Criar comunidade</h2>
+    <input id="nome" placeholder="Nome da comunidade">
+    <textarea id="descricao" placeholder="Descreva sua comunidade"></textarea>
+    <select id="categoria">
+      <option value="">Escolha uma categoria</option>
+      <option>Espiritualidade</option>
+      <option>Bíblia e estudos</option>
+      <option>Música</option>
+      <option>Missão</option>
+      <option>Amizades</option>
+      <option>Desenvolvimento pessoal</option>
+    </select>
+    <button class="primary-button" onclick="criar()">Criar comunidade</button>
+  </section>
+
+  <h2>Explorar comunidades</h2>
+  <div class="grid" id="lista"></div>
+</main>
+
+<script>
+const chave = "unya_comunidades";
+let comunidades = JSON.parse(localStorage.getItem(chave) || "[]");
+
+function salvar() {
+  localStorage.setItem(chave, JSON.stringify(comunidades));
+}
+
+function criar() {
+  const nome = document.getElementById("nome").value.trim();
+  const descricao = document.getElementById("descricao").value.trim();
+  const categoria = document.getElementById("categoria").value;
+
+  if (!nome || !descricao || !categoria) {
+    alert("Preencha todos os campos.");
+    return;
+  }
+
+  comunidades.push({
+    id: Date.now(),
+    nome,
+    descricao,
+    categoria,
+    participantes: 1
+  });
+
+  salvar();
+  renderizar();
+
+  document.getElementById("nome").value = "";
+  document.getElementById("descricao").value = "";
+  document.getElementById("categoria").value = "";
+}
+
+function entrar(id) {
+  const grupo = comunidades.find(g => g.id === id);
+  grupo.participantes++;
+  salvar();
+  renderizar();
+  alert("Você entrou na comunidade!");
+}
+
+function renderizar() {
+  const lista = document.getElementById("lista");
+  lista.innerHTML = "";
+
+  if (!comunidades.length) {
+    lista.textContent = "Ainda não existem comunidades. Crie a primeira!";
+    return;
+  }
+
+  comunidades.forEach(g => {
+    const card = document.createElement("article");
+    card.className = "grupo";
+
+    const titulo = document.createElement("h3");
+    titulo.textContent = g.nome;
+
+    const categoria = document.createElement("small");
+    categoria.className = "muted";
+    categoria.textContent = g.categoria;
+
+    const descricao = document.createElement("p");
+    descricao.textContent = g.descricao;
+
+    const participantes = document.createElement("p");
+    participantes.className = "muted";
+    participantes.textContent = g.participantes + " participante(s)";
+
+    const botao = document.createElement("button");
+    botao.className = "primary-button";
+    botao.textContent = "Entrar";
+    botao.onclick = () => entrar(g.id);
+
+    card.append(titulo, categoria, descricao, participantes, botao);
+    lista.appendChild(card);
+  });
+}
+
+renderizar();
+</script>
+
+</body>
+</html>

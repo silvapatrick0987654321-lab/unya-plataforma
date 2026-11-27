@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entrar | UNYA</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 420px;
+      background: #15131e;
+      border: 1px solid #302640;
+      border-radius: 20px;
+      padding: 30px;
+    }
+
+    .logo {
+      text-align: center;
+      color: #b58aff;
+      font-size: 38px;
+      letter-spacing: 5px;
+    }
+
+    .login-box h2 {
+      text-align: center;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      margin: 9px 0;
+      background: #09090f;
+      color: white;
+      border: 1px solid #40334f;
+      border-radius: 9px;
+    }
+
+    .primary-button {
+      width: 100%;
+      margin-top: 15px;
+    }
+
+    .switch {
+      text-align: center;
+      color: #b58aff;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-box">
+    <h1 class="logo">UNYA</h1>
+    <h2 id="titulo">Bem-vindo de volta!</h2>
+    <p class="muted" style="text-align:center">
+      Conectados por um propósito.
+    </p>
+
+    <form id="formulario">
+      <div id="campoNome" style="display:none">
+        <input type="text" placeholder="Nome completo" id="nome">
+      </div>
+
+      <input type="email" placeholder="Seu e-mail" required>
+      <input type="password" placeholder="Sua senha" required minlength="8">
+
+      <div id="campoNascimento" style="display:none">
+        <input type="date" id="nascimento">
+      </div>
+
+      <button class="primary-button" type="submit" id="botao">
+        Entrar
+      </button>
+    </form>
+
+    <p class="switch" onclick="alternar()">
+      Não tem uma conta? Cadastre-se
+    </p>
+
+    <p style="text-align:center">
+      <a href="index.html" class="muted">Voltar ao início</a>
+    </p>
+  </div>
+
+  <script>
+    let cadastro = false;
+
+    function alternar() {
+      cadastro = !cadastro;
+
+      document.getElementById("campoNome").style.display =
+        cadastro ? "block" : "none";
+
+      document.getElementById("campoNascimento").style.display =
+        cadastro ? "block" : "none";
+
+      document.getElementById("titulo").textContent =
+        cadastro ? "Criar minha conta" : "Bem-vindo de volta!";
+
+      document.getElementById("botao").textContent =
+        cadastro ? "Cadastrar" : "Entrar";
+    }
+
+    document.getElementById("formulario").addEventListener("submit", function(e) {
+      e.preventDefault();
+      alert("Tela demonstrativa: a autenticação será conectada ao banco de dados posteriormente.");
+    });
+  </script>
+
+</body>
+</html>

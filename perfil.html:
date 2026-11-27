@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meu perfil | UNYA</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body { padding-bottom: 40px; }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .profile {
+      max-width: 750px;
+      margin: 35px auto;
+      padding: 25px;
+      background: #15131e;
+      border: 1px solid #302640;
+      border-radius: 18px;
+      text-align: center;
+    }
+    .avatar {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #b58aff;
+    }
+    .bio { color: #aaa5b5; }
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 35px;
+      margin: 25px 0;
+    }
+    .stats strong { display: block; color: #c19cff; }
+    .profile input, .profile textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 7px 0;
+      color: white;
+      background: #09090f;
+      border: 1px solid #40334f;
+      border-radius: 9px;
+    }
+    .posts {
+      max-width: 750px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    .post {
+      background: #15131e;
+      border: 1px solid #302640;
+      border-radius: 12px;
+      padding: 20px;
+      min-height: 100px;
+    }
+    @media(max-width:500px) {
+      .stats { gap: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="container">
+  <h2 style="color:#b58aff;letter-spacing:4px">UNYA</h2>
+  <a href="index.html">Início</a>
+</header>
+
+<main class="container">
+  <section class="profile">
+    <img
+      id="foto"
+      class="avatar"
+      src="https://placehold.co/150x150/20172c/b58aff?text=UNYA"
+      alt="Foto de perfil"
+    >
+
+    <h1 id="nomeExibido">Nome do membro</h1>
+    <p class="bio" id="bioExibida">Conectados por um propósito.</p>
+
+    <div class="stats">
+      <div><strong id="publicacoes">0</strong>Publicações</div>
+      <div><strong>0</strong>Seguidores</div>
+      <div><strong>0</strong>Seguindo</div>
+    </div>
+
+    <button class="primary-button" onclick="editarPerfil()">
+      Editar perfil
+    </button>
+
+    <div id="editor" style="display:none;margin-top:20px">
+      <input id="novoNome" placeholder="Seu nome">
+      <textarea id="novaBio" placeholder="Conte um pouco sobre você"></textarea>
+      <input id="novaCidade" placeholder="Sua cidade">
+      <button class="primary-button" onclick="salvarPerfil()">
+        Salvar alterações
+      </button>
+    </div>
+
+    <p class="muted" id="cidade"></p>
+  </section>
+
+  <h2>Minhas publicações</h2>
+  <section class="posts" id="listaPosts">
+    <div class="post muted">Suas publicações aparecerão aqui.</div>
+  </section>
+</main>
+
+<script>
+  function editarPerfil() {
+    document.getElementById("editor").style.display = "block";
+  }
+
+  function salvarPerfil() {
+    const nome = document.getElementById("novoNome").value.trim();
+    const bio = document.getElementById("novaBio").value.trim();
+    const cidade = document.getElementById("novaCidade").value.trim();
+
+    if (!nome) {
+      alert("Informe seu nome.");
+      return;
+    }
+
+    document.getElementById("nomeExibido").textContent = nome;
+    document.getElementById("bioExibida").textContent = bio;
+    document.getElementById("cidade").textContent = cidade;
+
+    localStorage.setItem("unya_perfil", JSON.stringify({
+      nome, bio, cidade
+    }));
+
+    document.getElementById("editor").style.display = "none";
+  }
+
+  const perfilSalvo = JSON.parse(
+    localStorage.getItem("unya_perfil") || "null"
+  );
+
+  if (perfilSalvo) {
+    document.getElementById("nomeExibido").textContent = perfilSalvo.nome;
+    document.getElementById("bioExibida").textContent = perfilSalvo.bio;
+    document.getElementById("cidade").textContent = perfilSalvo.cidade;
+  }
+</script>
+
+</body>
+</html>

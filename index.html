@@ -1,111 +1,48 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>UNYA — Conectados por um propósito</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #09090f;
-      color: white;
-    }
-    header {
-      padding: 22px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #292333;
-    }
-    .logo {
-      font-size: 28px;
-      font-weight: bold;
-      color: #b58aff;
-      letter-spacing: 3px;
-    }
-    .hero {
-      text-align: center;
-      padding: 90px 20px;
-    }
-    .hero h1 {
-      font-size: clamp(38px, 8vw, 65px);
-      margin-bottom: 15px;
-    }
-    .hero h1 span { color: #b58aff; }
-    .hero p {
-      color: #b8b4c2;
-      font-size: 18px;
-      line-height: 1.6;
-    }
-    .button {
-      display: inline-block;
-      margin-top: 25px;
-      padding: 15px 30px;
-      background: #9560e8;
-      color: white;
-      text-decoration: none;
-      border-radius: 10px;
-      font-weight: bold;
-    }
-    .features {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 18px;
-      padding: 25px;
-      max-width: 1100px;
-      margin: auto;
-    }
-    .feature {
-      background: #15131e;
-      border: 1px solid #302640;
-      border-radius: 15px;
-      padding: 25px;
-    }
-    .feature h2 { color: #c19cff; }
-    .feature p { color: #aaa5b5; line-height: 1.5; }
-    footer {
-      text-align: center;
-      padding: 35px;
-      color: #777;
-    }
-  </style>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <header>
-    <div class="logo">UNYA</div>
-    <div>Comunidade jovem</div>
+
+  <header class="container">
+    <h2 style="color:#b58aff;letter-spacing:4px">UNYA</h2>
+    <span>Comunidade jovem</span>
   </header>
 
-  <main>
-    <section class="hero">
-      <h1>Conectados por <span>um propósito.</span></h1>
-      <p>Um lugar para compartilhar a fé, construir amizades,<br>
-      desenvolver talentos e transformar vidas.</p>
-      <a href="#comunidade" class="button">Conheça a UNYA</a>
+  <main class="container">
+    <section style="text-align:center;padding:80px 10px">
+      <h1 style="font-size:clamp(38px,8vw,65px)">
+        Conectados por <span style="color:#b58aff">um propósito.</span>
+      </h1>
+      <p class="muted">Fé, amizades, crescimento e missão.</p>
+      <button class="primary-button" onclick="mostrarMensagem()">
+        Conheça a UNYA
+      </button>
     </section>
 
-    <section class="features" id="comunidade">
-      <div class="feature">
-        <h2>Comunidade</h2>
-        <p>Conecte-se com jovens que compartilham seus interesses.</p>
-      </div>
-      <div class="feature">
-        <h2>Espiritualidade</h2>
-        <p>Compartilhe reflexões, estudos bíblicos e experiências.</p>
-      </div>
-      <div class="feature">
-        <h2>Missão</h2>
-        <p>Participe de projetos e ações que fazem a diferença.</p>
-      </div>
-      <div class="feature">
-        <h2>Eventos</h2>
-        <p>Descubra encontros e atividades da comunidade.</p>
-      </div>
+    <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
+      <div class="card"><h2>Comunidade</h2><p class="muted">Conecte-se com outros jovens.</p></div>
+      <div class="card"><h2>Espiritualidade</h2><p class="muted">Compartilhe sua fé.</p></div>
+      <div class="card"><h2>Missão</h2><p class="muted">Faça a diferença.</p></div>
+      <div class="card"><h2>Eventos</h2><p class="muted">Descubra novos encontros.</p></div>
     </section>
   </main>
 
-  <footer>UNYA © 2026 — Conectados por um propósito.</footer>
+  <footer style="text-align:center;padding:40px;color:#777">
+    UNYA © 2026 — Conectados por um propósito.
+  </footer>
+
+  <script src="js/app.js"></script>
+  <script>
+    function mostrarMensagem() {
+      alert("Bem-vindo à UNYA!");
+    }
+  </script>
 </body>
 </html>

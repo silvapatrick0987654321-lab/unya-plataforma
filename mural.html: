@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mural | UNYA</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+body { padding-bottom: 40px; }
+header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.feed { max-width:650px; margin:30px auto; }
+.composer,.publication {
+  background:#15131e;
+  border:1px solid #302640;
+  border-radius:16px;
+  padding:20px;
+  margin-bottom:18px;
+}
+textarea {
+  width:100%;
+  min-height:100px;
+  padding:14px;
+  background:#09090f;
+  color:white;
+  border:1px solid #40334f;
+  border-radius:10px;
+  resize:vertical;
+}
+.publication img {
+  width:100%;
+  border-radius:10px;
+  margin-top:12px;
+}
+.actions {
+  display:flex;
+  gap:15px;
+  margin-top:15px;
+  flex-wrap:wrap;
+}
+.actions button {
+  background:#292033;
+  border:0;
+  color:white;
+  padding:10px 14px;
+  border-radius:9px;
+}
+.author { color:#c19cff; font-weight:bold; }
+.muted { color:#aaa5b5; }
+</style>
+</head>
+<body>
+
+<header class="container">
+  <h2 style="color:#b58aff;letter-spacing:4px">UNYA</h2>
+  <nav>
+    <a href="index.html">Início</a> |
+    <a href="perfil.html">Perfil</a>
+  </nav>
+</header>
+
+<main class="container feed">
+  <h1>Nosso mural 💜</h1>
+  <p class="muted">Compartilhe sua caminhada e suas experiências.</p>
+
+  <section class="composer">
+    <textarea id="texto" placeholder="O que você gostaria de compartilhar?"></textarea>
+    <p><input type="file" id="imagem" accept="image/*"></p>
+    <button class="primary-button" onclick="publicar()">Publicar</button>
+  </section>
+
+  <section id="publicacoes"></section>
+</main>
+
+<script>
+const chave = "unya_mural_publicacoes";
+let posts = JSON.parse(localStorage.getItem(chave) || "[]");
+
+function salvar() {
+  localStorage.setItem(chave, JSON.stringify(posts));
+}
+
+function publicar() {
+  const texto = document.getElementById("texto").value.trim();
+  const arquivo = document.getElementById("imagem").files[0];
+
+  if (!texto && !arquivo) {
+    alert("Escreva algo ou escolha uma foto.");
+    return;
+  }
+
+  const criar = imagem => {
+    posts.unshift({
+      id: Date.now(),
+      texto,
+      imagem,
+      curtidas: [],
+      comentarios: [],
+      data: new Date().toLocaleString("pt-BR")
+    });
+
+    salvar();
+    renderizar();
+
+    document.getElementById("texto").value = "";
+    document.getElementById("imagem").value = "";
+  };
+
+  if (arquivo) {
+    const leitor = new FileReader();
+    leitor.onload = e => criar(e.target.result);
+    leitor.readAsDataURL(arquivo);
+  } else {
+    criar("");
+  }
+}
+
+function curtir(id) {
+  const post = posts.find(p => p.id === id);
+  post.curtidas.push("visitante");
+  salvar();
+  renderizar();
+}
+
+function comentar(id) {
+  const campo = document.getElementById("comentario-" + id);
+  const texto = campo.value.trim();
+  if (!texto) return;
+
+  posts.find(p => p.id === id).comentarios.push(texto);
+  salvar();
+  renderizar();
+}
+
+function renderizar() {
+  const area = document.getElementById("publicacoes");
+  area.innerHTML = "";
+
+  if (!posts.length) {
+    area.innerHTML = '<p class="muted">Ainda não há publicações. Seja o primeiro!</p>';
+    return;
+  }
+
+  posts.forEach(post => {
+    const card = document.createElement("article");
+    card.className = "publication";
+
+    const autor = document.createElement("p");
+    autor.className = "author";
+    autor.textContent = "Membro UNYA";
+
+    const data = document.createElement("small");
+    data.className = "muted";
+    data.textContent = post.data;
+
+    const texto = document.createElement("p");
+    texto.textContent = post.texto;
+
+    card.append(autor, data, texto);
+
+    if (post.imagem) {
+      const img = document.createElement("img");
+      img.src = post.imagem;
+      img.alt = "Foto publicada";
+      card.appendChild(img);
+    }
+
+    const acoes = document.createElement("div");
+    acoes.className = "actions";
+
+    const botaoCurtir = document.createElement("button");
+    botaoCurtir.textContent = "💜 Curtir (" + post.curtidas.length + ")";
+    botaoCurtir.onclick = () => curtir(post.id);
+
+    const botaoComentar = document.createElement("button");
+    botaoComentar.textContent = "Comentar";
+    botaoComentar.onclick = () => comentar(post.id);
+
+    acoes.append(botaoCurtir, botaoComentar);
+    card.appendChild(acoes);
+
+    const campo = document.createElement("input");
+    campo.id = "comentario-" + post.id;
+    campo.placeholder = "Escreva um comentário...";
+    campo.style.cssText = "width:100%;padding:12px;margin-top:12px;background:#09090f;color:white;border:1px solid #40334f;border-radius:9px";
+    card.appendChild(campo);
+
+    post.comentarios.forEach(comentario => {
+      const p = document.createElement("p");
+      p.className = "muted";
+      p.textContent = "💬 " + comentario;
+      card.appendChild(p);
+    });
+
+    area.appendChild(card);
+  });
+}
+
+renderizar();
+</script>
+</body>
+</html>
